@@ -2,7 +2,8 @@
 ## Wetland Hyperspectral Classification System
 基于深度学习与机器学习的高光谱遥感湿地生态系统精细化分类与景观格局分析系统
 
-file:///G:/6%E6%9C%88%E8%AE%BA%E6%96%87%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/wetland_project_structure.html
+![无标题](https://github.com/user-attachments/assets/59bf5efc-9f59-43aa-a486-4fad63e69c75)
+
 ## 📋 项目概述
 
 本项目是一个完整的高光谱遥感数据处理与分析平台，专门针对湿地生态系统的精细化分类任务。系统集成了先进的数据预处理、特征提取、智能分类和景观分析功能，支持约400波段的高光谱数据处理。
