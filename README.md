@@ -335,9 +335,9 @@ isort src/
 ```bibtex
 @software{wetland_hyperspectral_2025,
   title = {Wetland Hyperspectral Classification System: A Deep Learning Approach for Ecosystem Mapping},
-  author = {Your Name and Contributors},
+  author = {yseven123 and organize the whole projects},
   year = {2025},
-  url = {https://github.com/yourusername/wetland-hyperspectral-classification},
+  url = {https://github.com/yseven123/wetland-hyperspectral-classification},
   version = {1.0.0}
 }
 ```
