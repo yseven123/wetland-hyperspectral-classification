@@ -1,10 +1,5 @@
 # 湿地高光谱分类系统
 ## Wetland Hyperspectral Classification System
-
-[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Documentation](https://img.shields.io/badge/docs-latest-brightgreen.svg)](docs/)
-
 基于深度学习与机器学习的高光谱遥感湿地生态系统精细化分类与景观格局分析系统
 
 ## 📋 项目概述
@@ -336,10 +331,10 @@ isort src/
 如果您在研究中使用了本项目，请使用以下引用格式：
 
 ```bibtex
-@software{wetland_hyperspectral_2024,
+@software{wetland_hyperspectral_2025,
   title = {Wetland Hyperspectral Classification System: A Deep Learning Approach for Ecosystem Mapping},
   author = {Your Name and Contributors},
-  year = {2024},
+  year = {2025},
   url = {https://github.com/yourusername/wetland-hyperspectral-classification},
   version = {1.0.0}
 }
@@ -351,10 +346,10 @@ isort src/
 
 ## 🤝 支持与联系
 
-- 📧 邮箱: your.email@example.com
-- 🐛 问题反馈: [GitHub Issues](https://github.com/yourusername/wetland-hyperspectral-classification/issues)
-- 💬 讨论交流: [GitHub Discussions](https://github.com/yourusername/wetland-hyperspectral-classification/discussions)
-- 📖 文档: [项目文档](https://yourusername.github.io/wetland-hyperspectral-classification/)
+- 📧 邮箱: 22825143692@qq.com
+- 🐛 问题反馈: [GitHub Issues](https://github.com/yseven123/wetland-hyperspectral-classification/issues)
+- 💬 讨论交流: [GitHub Discussions](https://github.com/yseven123/wetland-hyperspectral-classification/discussions)
+- 📖 文档: [项目文档](https://yseven123.github.io/wetland-hyperspectral-classification/)
 
 ## 🙏 致谢
 
@@ -366,4 +361,4 @@ isort src/
 
 ---
 
-**🌍 让我们一起保护湿地生态系统！**
+**🌍 为湿地研究贡献力量！**
