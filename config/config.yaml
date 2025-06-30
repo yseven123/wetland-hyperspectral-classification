@@ -1,0 +1,380 @@
+# 湿地高光谱分类系统主配置文件
+# Wetland Hyperspectral Classification System Main Configuration
+
+# 项目基本信息
+project:
+  name: "wetland_hyperspectral_classification"
+  version: "1.0.0"
+  description: "基于深度学习与机器学习的高光谱遥感湿地生态系统精细化分类与景观格局分析系统"
+  author: "Wetland Research Team"
+  
+# 运行环境配置
+runtime:
+  # 计算设备
+  device: "auto"  # auto, cpu, cuda, mps
+  gpu_ids: [0]    # GPU设备ID列表
+  num_workers: 4  # 数据加载并行进程数
+  
+  # 内存管理
+  memory_limit: "16GB"
+  cache_size: "4GB"
+  batch_size: 32
+  
+  # 随机种子
+  random_seed: 42
+  deterministic: true
+  
+# 数据配置
+data:
+  # 数据路径
+  root_dir: "data/"
+  raw_dir: "data/raw/"
+  processed_dir: "data/processed/"
+  samples_dir: "data/samples/"
+  
+  # 高光谱数据配置
+  hyperspectral:
+    format: "ENVI"  # ENVI, GeoTIFF, HDF5, NetCDF
+    bands: 400      # 光谱波段数
+    wavelength_range: [400, 2500]  # 波长范围(nm)
+    spatial_resolution: 30  # 空间分辨率(m)
+    nodata_value: -9999
+    
+  # 训练样本配置
+  samples:
+    format: "shapefile"  # shapefile, geojson, csv
+    train_ratio: 0.7
+    val_ratio: 0.15
+    test_ratio: 0.15
+    stratify: true
+    min_samples_per_class: 50
+    
+  # 数据增强
+  augmentation:
+    enabled: true
+    rotation: true
+    flip: true
+    noise_factor: 0.1
+    brightness_factor: 0.2
+    
+# 预处理配置
+preprocessing:
+  # 辐射定标
+  radiometric:
+    enabled: true
+    method: "TOA"  # TOA, BOA, RAD
+    scale_factor: 0.0001
+    offset: 0.0
+    
+  # 大气校正
+  atmospheric:
+    enabled: true
+    method: "FLAASH"  # FLAASH, QUAC, DOS, 6SV
+    water_vapor: 2.5
+    aerosol_model: "rural"
+    visibility: 40.0
+    
+  # 几何校正
+  geometric:
+    enabled: true
+    resampling: "bilinear"  # nearest, bilinear, cubic
+    target_crs: "EPSG:4326"
+    pixel_size: [30, 30]
+    
+  # 噪声去除
+  noise_reduction:
+    enabled: true
+    method: "savgol"  # savgol, gaussian, median
+    window_size: 5
+    polynomial_order: 2
+    
+  # 光谱平滑
+  spectral_smoothing:
+    enabled: true
+    method: "savitzky_golay"
+    window_length: 7
+    polyorder: 2
+
+# 特征提取配置
+features:
+  # 光谱特征
+  spectral:
+    enabled: true
+    # 原始光谱
+    raw_bands: true
+    # 一阶导数
+    first_derivative: true
+    # 二阶导数
+    second_derivative: false
+    # 连续统去除
+    continuum_removal: true
+    
+  # 植被指数
+  vegetation_indices:
+    enabled: true
+    indices:
+      - "NDVI"      # 归一化植被指数
+      - "EVI"       # 增强植被指数
+      - "SAVI"      # 土壤调节植被指数
+      - "NDWI"      # 归一化水分指数
+      - "MNDWI"     # 修正归一化水分指数
+      - "NDMI"      # 归一化湿度指数
+      - "REP"       # 红边位置
+      - "MCARI"     # 叶绿素吸收指数
+      - "TCARI"     # 变换叶绿素吸收指数
+      - "PRI"       # 光化学植被指数
+      
+  # 纹理特征
+  texture:
+    enabled: true
+    methods:
+      - "GLCM"      # 灰度共生矩阵
+      - "LBP"       # 局部二值模式
+      - "GLRLM"     # 灰度游程矩阵
+    window_size: [7, 7]
+    distances: [1, 2]
+    angles: [0, 45, 90, 135]
+    
+  # 空间特征
+  spatial:
+    enabled: true
+    # 形态学特征
+    morphological: true
+    # 边缘特征
+    edge_detection: true
+    # 梯度特征
+    gradient: true
+    
+  # 主成分分析
+  pca:
+    enabled: true
+    n_components: 50
+    whiten: true
+    
+  # 最小噪声分量
+  mnf:
+    enabled: true
+    n_components: 30
+
+# 分类配置
+classification:
+  # 默认分类器
+  default_classifier: "hybrid_cnn"
+  
+  # 类别定义
+  classes:
+    water:
+      id: 1
+      name: "水体"
+      color: [0, 0, 255]
+      description: "开放水面、浅水区域、季节性水体"
+    emergent_vegetation:
+      id: 2
+      name: "挺水植物"
+      color: [0, 255, 0]
+      description: "芦苇、香蒲等挺水植物群落"
+    floating_vegetation:
+      id: 3
+      name: "浮叶植物"
+      color: [128, 255, 0]
+      description: "荷花、睡莲等浮叶植物群落"
+    submerged_vegetation:
+      id: 4
+      name: "沉水植物"
+      color: [0, 255, 128]
+      description: "眼子菜、苦草等沉水植物群落"
+    wet_meadow:
+      id: 5
+      name: "湿生草本"
+      color: [255, 255, 0]
+      description: "湿生草本植物群落"
+    organic_soil:
+      id: 6
+      name: "有机质土壤"
+      color: [139, 69, 19]
+      description: "富含有机质的湿地土壤"
+    mineral_soil:
+      id: 7
+      name: "矿物质土壤"
+      color: [205, 133, 63]
+      description: "以矿物质为主的土壤"
+    built_up:
+      id: 8
+      name: "建筑物"
+      color: [255, 0, 0]
+      description: "建筑物和人工结构"
+    road:
+      id: 9
+      name: "道路"
+      color: [128, 128, 128]
+      description: "道路和交通设施"
+    farmland:
+      id: 10
+      name: "农田"
+      color: [255, 165, 0]
+      description: "农田和农业用地"
+
+# 模型训练配置
+training:
+  # 通用参数
+  epochs: 100
+  patience: 15
+  min_delta: 0.001
+  
+  # 优化器
+  optimizer:
+    name: "AdamW"
+    lr: 0.001
+    weight_decay: 0.01
+    
+  # 学习率调度
+  scheduler:
+    name: "CosineAnnealingLR"
+    T_max: 100
+    eta_min: 1e-6
+    
+  # 损失函数
+  loss:
+    name: "CrossEntropyLoss"
+    class_weights: "balanced"
+    label_smoothing: 0.1
+    
+  # 验证
+  validation:
+    frequency: 1
+    metrics: ["accuracy", "f1_score", "kappa", "precision", "recall"]
+
+# 后处理配置
+postprocessing:
+  # 空间滤波
+  spatial_filter:
+    enabled: true
+    method: "majority"  # majority, median, gaussian
+    kernel_size: 3
+    
+  # 形态学操作
+  morphology:
+    enabled: true
+    operations:
+      - "opening"
+      - "closing"
+    kernel_size: 3
+    
+  # 连通性分析
+  connectivity:
+    enabled: true
+    min_area: 9  # 最小连通区域面积(像素)
+    connectivity: 8
+    
+  # 生态约束
+  ecological_constraints:
+    enabled: true
+    water_elevation_threshold: 10  # 水体高程阈值
+    vegetation_slope_threshold: 30  # 植被坡度阈值
+
+# 景观分析配置
+landscape:
+  # 景观指数计算
+  metrics:
+    enabled: true
+    patch_metrics:
+      - "area"
+      - "perimeter"
+      - "shape_index"
+      - "fractal_dimension"
+    class_metrics:
+      - "total_area"
+      - "patch_density"
+      - "edge_density"
+      - "mean_patch_size"
+      - "largest_patch_index"
+    landscape_metrics:
+      - "shannon_diversity"
+      - "simpson_diversity"
+      - "evenness"
+      - "contagion"
+      - "aggregation_index"
+      
+  # 连通性分析
+  connectivity:
+    enabled: true
+    distance_threshold: 100  # 连通距离阈值(m)
+    methods:
+      - "euclidean"
+      - "least_cost"
+
+# 评估配置
+evaluation:
+  # 精度评估
+  accuracy_assessment:
+    enabled: true
+    metrics:
+      - "overall_accuracy"
+      - "kappa_coefficient"
+      - "producer_accuracy"
+      - "user_accuracy"
+      - "f1_score"
+    
+  # 交叉验证
+  cross_validation:
+    enabled: true
+    folds: 5
+    stratified: true
+    
+  # 不确定性分析
+  uncertainty:
+    enabled: true
+    methods:
+      - "monte_carlo_dropout"
+      - "ensemble_variance"
+    n_samples: 100
+
+# 输出配置
+output:
+  # 基本输出
+  base_dir: "output/"
+  create_timestamp_dir: true
+  
+  # 分类结果
+  classification_map:
+    format: "GeoTIFF"
+    compression: "LZW"
+    
+  # 统计报告
+  statistics:
+    format: ["CSV", "Excel", "JSON"]
+    include_confidence: true
+    
+  # 可视化
+  visualization:
+    format: ["PNG", "PDF", "SVG"]
+    dpi: 300
+    colormap: "custom"
+    
+  # 模型保存
+  model:
+    save_best: true
+    save_checkpoints: true
+    format: "pkl"  # pkl, pth, h5
+
+# 日志配置
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  format: "[%(asctime)s] %(levelname)s: %(message)s"
+  file: "logs/wetland_classification.log"
+  max_file_size: "10MB"
+  backup_count: 5
+
+# 性能监控
+monitoring:
+  enabled: true
+  memory_usage: true
+  gpu_usage: true
+  processing_time: true
+  
+# 缓存配置
+cache:
+  enabled: true
+  backend: "disk"  # memory, disk, redis
+  ttl: 3600  # 缓存过期时间(秒)
+  max_size: "2GB"

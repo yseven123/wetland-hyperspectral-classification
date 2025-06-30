@@ -1,0 +1,473 @@
+# 湿地高光谱分类系统数据集配置文件
+# Wetland Hyperspectral Classification System Datasets Configuration
+
+# 数据集基本信息
+dataset_info:
+  name: "wetland_hyperspectral_dataset"
+  version: "1.0.0"
+  description: "湿地生态系统高光谱遥感数据集"
+  created_date: "2024-01-01"
+  updated_date: "2024-12-01"
+  license: "CC BY-NC-SA 4.0"
+  citation: "Wetland Research Team (2024). Wetland Hyperspectral Dataset v1.0"
+
+# 数据源配置
+data_sources:
+  
+  # 高光谱传感器
+  hyperspectral_sensors:
+    
+    # AVIRIS传感器
+    aviris:
+      name: "AVIRIS"
+      description: "Airborne Visible/Infrared Imaging Spectrometer"
+      spectral_range: [400, 2500]  # nm
+      spectral_bands: 224
+      spectral_resolution: 10  # nm
+      spatial_resolution: [3.7, 20]  # m (可变)
+      swath_width: 11  # km
+      bit_depth: 16
+      data_format: "ENVI"
+      calibration_type: "radiance"
+      
+    # CASI传感器
+    casi:
+      name: "CASI"
+      description: "Compact Airborne Spectrographic Imager"
+      spectral_range: [400, 1000]  # nm
+      spectral_bands: 288
+      spectral_resolution: 2.5  # nm
+      spatial_resolution: [0.5, 10]  # m (可变)
+      swath_width: 1.5  # km
+      bit_depth: 16
+      data_format: "ENVI"
+      calibration_type: "radiance"
+      
+    # HyMap传感器
+    hymap:
+      name: "HyMap"
+      description: "Hyperspectral Mapper"
+      spectral_range: [450, 2480]  # nm
+      spectral_bands: 126
+      spectral_resolution: 15  # nm
+      spatial_resolution: [3, 10]  # m (可变)
+      swath_width: 6  # km
+      bit_depth: 16
+      data_format: "ENVI"
+      calibration_type: "radiance"
+      
+    # Hyperion传感器
+    hyperion:
+      name: "Hyperion"
+      description: "EO-1 Hyperion"
+      spectral_range: [400, 2500]  # nm
+      spectral_bands: 242
+      spectral_resolution: 10  # nm
+      spatial_resolution: 30  # m
+      swath_width: 7.7  # km
+      bit_depth: 16
+      data_format: "GeoTIFF"
+      calibration_type: "radiance"
+
+# 研究区域配置
+study_areas:
+  
+  # 研究区域1：洞庭湖湿地
+  dongting_lake:
+    name: "洞庭湖湿地"
+    location: "湖南省"
+    coordinates:
+      center: [112.8, 29.0]
+      bounds: [[112.0, 28.5], [113.5, 29.5]]
+    area_km2: 2625
+    wetland_types:
+      - "淡水湖泊"
+      - "河流湿地"
+      - "草本沼泽"
+      - "木本沼泽"
+    dominant_species:
+      - "芦苇 (Phragmites australis)"
+      - "苔草 (Carex spp.)"
+      - "荷花 (Nelumbo nucifera)"
+      - "菰 (Zizania latifolia)"
+    data_acquisition:
+      dates: ["2023-05-15", "2023-08-20", "2023-10-10"]
+      sensors: ["aviris", "casi"]
+      weather_conditions: "晴朗"
+      
+  # 研究区域2：鄱阳湖湿地
+  poyang_lake:
+    name: "鄱阳湖湿地"
+    location: "江西省"
+    coordinates:
+      center: [116.2, 29.0]
+      bounds: [[115.5, 28.2], [116.8, 29.8]]
+    area_km2: 3283
+    wetland_types:
+      - "淡水湖泊"
+      - "季节性湿地"
+      - "草本湿地"
+    dominant_species:
+      - "苔草 (Carex spp.)"
+      - "虉草 (Phalaris arundinacea)"
+      - "水葫芦 (Eichhornia crassipes)"
+      - "荇菜 (Nymphoides peltata)"
+    data_acquisition:
+      dates: ["2023-04-25", "2023-07-15", "2023-11-05"]
+      sensors: ["hymap", "hyperion"]
+      weather_conditions: "晴朗"
+      
+  # 研究区域3：三江平原湿地
+  sanjiang_plain:
+    name: "三江平原湿地"
+    location: "黑龙江省"
+    coordinates:
+      center: [132.5, 47.5]
+      bounds: [[131.0, 46.5], [134.0, 48.5]]
+    area_km2: 50000
+    wetland_types:
+      - "淡水沼泽"
+      - "泥炭湿地"
+      - "季节性湿地"
+    dominant_species:
+      - "小叶章 (Deyeuxia angustifolia)"
+      - "苔草 (Carex spp.)"
+      - "芦苇 (Phragmites australis)"
+      - "野大豆 (Glycine soja)"
+    data_acquisition:
+      dates: ["2023-06-10", "2023-09-01"]
+      sensors: ["aviris", "hymap"]
+      weather_conditions: "晴朗"
+
+# 数据集划分
+dataset_splits:
+  
+  # 按地理区域划分
+  geographic_split:
+    train_regions: ["dongting_lake"]
+    validation_regions: ["poyang_lake"]
+    test_regions: ["sanjiang_plain"]
+    
+  # 按时间划分
+  temporal_split:
+    train_dates: ["2023-05-15", "2023-06-10"]
+    validation_dates: ["2023-07-15", "2023-08-20"]
+    test_dates: ["2023-09-01", "2023-10-10", "2023-11-05"]
+    
+  # 随机划分
+  random_split:
+    train_ratio: 0.7
+    validation_ratio: 0.15
+    test_ratio: 0.15
+    stratify: true
+    random_seed: 42
+    
+  # 分层采样
+  stratified_split:
+    by_class: true
+    by_region: true
+    min_samples_per_class: 50
+    
+# 样本标注配置
+ground_truth:
+  
+  # 标注方法
+  annotation_methods:
+    - "field_survey"      # 野外调查
+    - "expert_interpretation"  # 专家目视解译
+    - "high_resolution_imagery"  # 高分辨率影像
+    - "lidar_data"        # 激光雷达数据
+    
+  # 标注精度
+  annotation_accuracy:
+    positional_accuracy: 3  # m (GPS精度)
+    thematic_accuracy: 0.95  # 专题精度
+    
+  # 质量控制
+  quality_control:
+    double_annotation: true
+    expert_review: true
+    consistency_check: true
+    
+  # 标注格式
+  formats:
+    vector: "shapefile"  # shapefile, geojson, kml
+    raster: "GeoTIFF"   # GeoTIFF, ENVI
+    tabular: "CSV"      # CSV, Excel
+    
+# 数据预处理配置
+preprocessing_config:
+  
+  # 辐射校正
+  radiometric_correction:
+    enabled: true
+    methods:
+      dn_to_radiance:
+        enabled: true
+        gain_offset_method: true
+      atmospheric_correction:
+        method: "FLAASH"  # FLAASH, QUAC, DOS, ATCOR
+        parameters:
+          water_vapor: 2.5
+          aerosol_model: "rural"
+          visibility: 40.0
+      topographic_correction:
+        enabled: true
+        dem_source: "SRTM"
+        method: "Minnaert"
+        
+  # 几何校正
+  geometric_correction:
+    enabled: true
+    reference_system: "UTM"
+    resampling_method: "bilinear"
+    pixel_size: [30, 30]  # m
+    
+  # 光谱预处理
+  spectral_preprocessing:
+    smoothing:
+      method: "savitzky_golay"
+      window_length: 7
+      polynomial_order: 2
+    derivative:
+      first_derivative: true
+      second_derivative: false
+    continuum_removal: true
+    normalization:
+      method: "l2"  # l1, l2, max, minmax
+      
+  # 噪声去除
+  noise_removal:
+    bad_bands: [0, 1, 2, 220, 221, 222, 223]  # 噪声波段
+    spike_removal: true
+    stripe_removal: true
+    
+# 数据增强配置
+data_augmentation:
+  
+  # 几何变换
+  geometric_transforms:
+    rotation:
+      enabled: true
+      angles: [90, 180, 270]
+    flipping:
+      horizontal: true
+      vertical: true
+    scaling:
+      enabled: true
+      factors: [0.8, 1.2]
+    translation:
+      enabled: true
+      pixels: [-2, 2]
+      
+  # 光谱变换
+  spectral_transforms:
+    noise_addition:
+      enabled: true
+      noise_level: 0.01
+      noise_type: "gaussian"
+    brightness_adjustment:
+      enabled: true
+      factor_range: [0.8, 1.2]
+    contrast_adjustment:
+      enabled: true
+      factor_range: [0.9, 1.1]
+    spectral_shift:
+      enabled: true
+      shift_range: [-2, 2]  # 波段
+      
+  # 混合增强
+  mixup:
+    enabled: true
+    alpha: 0.2
+  cutmix:
+    enabled: true
+    alpha: 1.0
+
+# 数据格式标准
+data_formats:
+  
+  # 高光谱数据格式
+  hyperspectral:
+    primary_format: "ENVI"
+    supported_formats:
+      - "ENVI"
+      - "GeoTIFF"
+      - "HDF5"
+      - "NetCDF"
+      - "MATLAB"
+    metadata_format: "JSON"
+    
+  # 地面真值格式
+  ground_truth:
+    vector_format: "Shapefile"
+    raster_format: "GeoTIFF"
+    attributes:
+      class_id: "integer"
+      class_name: "string"
+      confidence: "float"
+      date_collected: "date"
+      source: "string"
+
+# 数据质量控制
+quality_control:
+  
+  # 数据完整性检查
+  completeness_check:
+    missing_pixels: 0.05  # 最大缺失像素比例
+    cloud_cover: 0.1      # 最大云覆盖比例
+    shadow_cover: 0.1     # 最大阴影覆盖比例
+    
+  # 光谱质量检查
+  spectral_quality:
+    signal_to_noise_ratio: 100  # 最小信噪比
+    spectral_resolution: 10     # nm
+    spectral_calibration_accuracy: 0.5  # nm
+    
+  # 几何质量检查
+  geometric_quality:
+    positional_accuracy: 5  # m
+    geometric_distortion: 1  # 像素
+    
+  # 时相一致性检查
+  temporal_consistency:
+    phenology_check: true
+    seasonal_variation: true
+
+# 元数据规范
+metadata_standards:
+  
+  # 标准格式
+  format: "ISO 19115"
+  
+  # 必需字段
+  required_fields:
+    - "title"
+    - "abstract"
+    - "creation_date"
+    - "spatial_extent"
+    - "temporal_extent"
+    - "coordinate_system"
+    - "resolution"
+    - "data_quality"
+    - "lineage"
+    - "contact_info"
+    
+  # 推荐字段
+  recommended_fields:
+    - "keywords"
+    - "use_constraints"
+    - "access_constraints"
+    - "distribution_info"
+    - "maintenance_info"
+
+# 数据存储配置
+storage:
+  
+  # 存储结构
+  structure:
+    raw_data: "data/raw/"
+    processed_data: "data/processed/"
+    ground_truth: "data/labels/"
+    metadata: "data/metadata/"
+    
+  # 文件命名规范
+  naming_convention:
+    hyperspectral: "{sensor}_{location}_{date}_{resolution}.tif"
+    ground_truth: "{location}_{date}_labels.shp"
+    metadata: "{sensor}_{location}_{date}_metadata.json"
+    
+  # 压缩设置
+  compression:
+    hyperspectral: "LZW"
+    ground_truth: "ZIP"
+    
+  # 备份策略
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_period: "1_year"
+    
+# 数据共享配置
+data_sharing:
+  
+  # 访问控制
+  access_control:
+    public_data: ["sample_dataset"]
+    restricted_data: ["full_dataset"]
+    authentication_required: true
+    
+  # 数据许可
+  licensing:
+    default_license: "CC BY-NC-SA 4.0"
+    commercial_use: false
+    attribution_required: true
+    
+  # 下载配置
+  download:
+    max_file_size: "10GB"
+    concurrent_downloads: 3
+    bandwidth_limit: "100MB/s"
+
+# 基准数据集
+benchmark_datasets:
+  
+  # 公开数据集
+  public_datasets:
+    indian_pines:
+      name: "Indian Pines"
+      classes: 16
+      samples: 10249
+      spectral_bands: 200
+      spatial_size: [145, 145]
+      source: "Purdue University"
+      
+    pavia_university:
+      name: "Pavia University"
+      classes: 9
+      samples: 42776
+      spectral_bands: 103
+      spatial_size: [610, 340]
+      source: "University of Pavia"
+      
+    kennedy_space_center:
+      name: "Kennedy Space Center"
+      classes: 13
+      samples: 5211
+      spectral_bands: 176
+      spatial_size: [512, 614]
+      source: "NASA"
+      
+  # 湿地专用数据集
+  wetland_datasets:
+    botswana:
+      name: "Botswana"
+      classes: 14
+      samples: 3248
+      spectral_bands: 145
+      spatial_size: [1476, 256]
+      wetland_types: ["seasonal_swamps", "permanent_swamps"]
+      
+# 评估指标配置
+evaluation_metrics:
+  
+  # 分类精度指标
+  classification_metrics:
+    - "overall_accuracy"
+    - "average_accuracy"
+    - "kappa_coefficient"
+    - "producer_accuracy"
+    - "user_accuracy"
+    - "f1_score"
+    
+  # 空间精度指标
+  spatial_metrics:
+    - "boundary_accuracy"
+    - "shape_similarity"
+    - "area_accuracy"
+    
+  # 不确定性指标
+  uncertainty_metrics:
+    - "prediction_entropy"
+    - "mutual_information"
+    - "confidence_interval"

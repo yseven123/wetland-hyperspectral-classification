@@ -1,0 +1,519 @@
+# 湿地高光谱分类系统模型配置文件
+# Wetland Hyperspectral Classification System Models Configuration
+
+# 传统机器学习模型
+traditional_ml:
+  
+  # 支持向量机
+  svm:
+    name: "Support Vector Machine"
+    type: "traditional"
+    parameters:
+      C: 1.0
+      kernel: "rbf"  # linear, poly, rbf, sigmoid
+      gamma: "scale"  # scale, auto, float
+      degree: 3  # 仅用于poly核
+      coef0: 0.0  # 仅用于poly和sigmoid核
+      shrinking: true
+      probability: true
+      tol: 1e-3
+      cache_size: 200
+      class_weight: "balanced"
+      verbose: false
+      max_iter: -1
+      decision_function_shape: "ovr"
+      break_ties: false
+      random_state: 42
+    
+    # 超参数搜索空间
+    hyperparameter_search:
+      C: [0.1, 1.0, 10.0, 100.0]
+      gamma: ["scale", "auto", 0.001, 0.01, 0.1, 1.0]
+      kernel: ["rbf", "linear", "poly"]
+    
+    # 特征选择
+    feature_selection:
+      enabled: true
+      method: "RFE"  # RFE, SelectKBest, RFECV
+      n_features: 100
+  
+  # 随机森林
+  random_forest:
+    name: "Random Forest"
+    type: "traditional"
+    parameters:
+      n_estimators: 100
+      criterion: "gini"  # gini, entropy
+      max_depth: null
+      min_samples_split: 2
+      min_samples_leaf: 1
+      min_weight_fraction_leaf: 0.0
+      max_features: "sqrt"  # sqrt, log2, auto, int, float
+      max_leaf_nodes: null
+      min_impurity_decrease: 0.0
+      bootstrap: true
+      oob_score: true
+      n_jobs: -1
+      random_state: 42
+      verbose: 0
+      warm_start: false
+      class_weight: "balanced"
+      ccp_alpha: 0.0
+      max_samples: null
+    
+    hyperparameter_search:
+      n_estimators: [50, 100, 200, 300]
+      max_depth: [3, 5, 10, 20, null]
+      min_samples_split: [2, 5, 10]
+      min_samples_leaf: [1, 2, 4]
+      max_features: ["sqrt", "log2", 0.5]
+    
+    feature_importance:
+      enabled: true
+      plot: true
+  
+  # XGBoost
+  xgboost:
+    name: "XGBoost"
+    type: "traditional"
+    parameters:
+      objective: "multi:softprob"
+      eval_metric: "mlogloss"
+      max_depth: 6
+      learning_rate: 0.1
+      n_estimators: 100
+      subsample: 0.8
+      colsample_bytree: 0.8
+      colsample_bylevel: 1.0
+      colsample_bynode: 1.0
+      reg_alpha: 0.0
+      reg_lambda: 1.0
+      scale_pos_weight: 1.0
+      min_child_weight: 1
+      gamma: 0.0
+      max_delta_step: 0
+      random_state: 42
+      n_jobs: -1
+      verbosity: 1
+      tree_method: "auto"  # auto, exact, approx, hist, gpu_hist
+      grow_policy: "depthwise"  # depthwise, lossguide
+    
+    hyperparameter_search:
+      max_depth: [3, 5, 7, 9]
+      learning_rate: [0.01, 0.1, 0.2, 0.3]
+      n_estimators: [50, 100, 200, 300]
+      subsample: [0.7, 0.8, 0.9, 1.0]
+      colsample_bytree: [0.7, 0.8, 0.9, 1.0]
+    
+    early_stopping:
+      enabled: true
+      rounds: 50
+
+  # K近邻
+  knn:
+    name: "K-Nearest Neighbors"
+    type: "traditional"
+    parameters:
+      n_neighbors: 5
+      weights: "uniform"  # uniform, distance, callable
+      algorithm: "auto"  # auto, ball_tree, kd_tree, brute
+      leaf_size: 30
+      p: 2  # 距离度量参数
+      metric: "minkowski"
+      metric_params: null
+      n_jobs: -1
+    
+    hyperparameter_search:
+      n_neighbors: [3, 5, 7, 9, 11]
+      weights: ["uniform", "distance"]
+      metric: ["euclidean", "manhattan", "chebyshev"]
+
+# 深度学习模型
+deep_learning:
+  
+  # 3D-CNN
+  cnn_3d:
+    name: "3D Convolutional Neural Network"
+    type: "deep_learning"
+    framework: "pytorch"
+    architecture:
+      input_size: [1, 25, 25, 200]  # [batch, height, width, channels]
+      conv_layers:
+        - filters: 32
+          kernel_size: [3, 3, 7]
+          stride: [1, 1, 2]
+          padding: [1, 1, 3]
+          activation: "relu"
+          batch_norm: true
+          dropout: 0.3
+        - filters: 64
+          kernel_size: [3, 3, 5]
+          stride: [1, 1, 2]
+          padding: [1, 1, 2]
+          activation: "relu"
+          batch_norm: true
+          dropout: 0.4
+        - filters: 128
+          kernel_size: [3, 3, 3]
+          stride: [1, 1, 2]
+          padding: [1, 1, 1]
+          activation: "relu"
+          batch_norm: true
+          dropout: 0.5
+      
+      global_pool: "adaptive_avg"
+      fc_layers:
+        - units: 256
+          activation: "relu"
+          dropout: 0.5
+        - units: 128
+          activation: "relu"
+          dropout: 0.3
+      
+      output_units: 10  # 类别数
+      output_activation: "softmax"
+    
+    training:
+      optimizer:
+        name: "Adam"
+        lr: 0.001
+        weight_decay: 1e-4
+      loss: "CrossEntropyLoss"
+      batch_size: 32
+      epochs: 100
+      patience: 15
+    
+    data_augmentation:
+      rotation: true
+      flip: true
+      noise: 0.1
+
+  # HybridSN (3D-2D混合网络)
+  hybrid_cnn:
+    name: "HybridSN (3D-2D Hybrid Network)"
+    type: "deep_learning"
+    framework: "pytorch"
+    architecture:
+      input_size: [1, 25, 25, 200]
+      
+      # 3D卷积部分
+      conv3d_layers:
+        - filters: 8
+          kernel_size: [1, 1, 7]
+          stride: [1, 1, 2]
+          padding: [0, 0, 3]
+          activation: "relu"
+          batch_norm: true
+        - filters: 16
+          kernel_size: [1, 1, 5]
+          stride: [1, 1, 2]
+          padding: [0, 0, 2]
+          activation: "relu"
+          batch_norm: true
+        - filters: 32
+          kernel_size: [1, 1, 3]
+          stride: [1, 1, 1]
+          padding: [0, 0, 1]
+          activation: "relu"
+          batch_norm: true
+      
+      # 2D卷积部分
+      conv2d_layers:
+        - filters: 64
+          kernel_size: [3, 3]
+          stride: [1, 1]
+          padding: [1, 1]
+          activation: "relu"
+          batch_norm: true
+        - filters: 128
+          kernel_size: [3, 3]
+          stride: [1, 1]
+          padding: [1, 1]
+          activation: "relu"
+          batch_norm: true
+        - filters: 256
+          kernel_size: [3, 3]
+          stride: [1, 1]
+          padding: [1, 1]
+          activation: "relu"
+          batch_norm: true
+      
+      global_pool: "adaptive_avg"
+      fc_layers:
+        - units: 256
+          activation: "relu"
+          dropout: 0.5
+        - units: 128
+          activation: "relu"
+          dropout: 0.4
+      
+      output_units: 10
+      output_activation: "softmax"
+    
+    training:
+      optimizer:
+        name: "AdamW"
+        lr: 0.001
+        weight_decay: 1e-3
+      scheduler:
+        name: "StepLR"
+        step_size: 30
+        gamma: 0.1
+      loss: "CrossEntropyLoss"
+      batch_size: 64
+      epochs: 150
+      patience: 20
+
+  # Vision Transformer
+  vision_transformer:
+    name: "Vision Transformer"
+    type: "deep_learning"
+    framework: "pytorch"
+    architecture:
+      input_size: [25, 25, 200]
+      patch_size: [5, 5]  # 空间补丁大小
+      spectral_patch_size: 10  # 光谱补丁大小
+      embed_dim: 256
+      num_heads: 8
+      num_layers: 6
+      mlp_ratio: 4.0
+      dropout: 0.1
+      attention_dropout: 0.1
+      patch_dropout: 0.1
+      
+      # 位置编码
+      position_embedding: "learnable"  # learnable, sinusoidal
+      
+      # 分类头
+      classifier:
+        dropout: 0.5
+        units: 10
+    
+    training:
+      optimizer:
+        name: "AdamW"
+        lr: 1e-4
+        weight_decay: 1e-2
+      scheduler:
+        name: "CosineAnnealingLR"
+        T_max: 100
+      loss: "CrossEntropyLoss"
+      batch_size: 32
+      epochs: 200
+      warmup_epochs: 20
+
+  # ResNet for Hyperspectral
+  resnet_hs:
+    name: "ResNet for Hyperspectral"
+    type: "deep_learning"
+    framework: "pytorch"
+    architecture:
+      input_size: [1, 25, 25, 200]
+      depth: 34  # 18, 34, 50, 101, 152
+      
+      # 初始卷积
+      initial_conv:
+        filters: 64
+        kernel_size: [3, 3, 7]
+        stride: [1, 1, 2]
+        padding: [1, 1, 3]
+      
+      # 残差块配置
+      blocks:
+        - layers: 3
+          filters: 64
+          stride: 1
+        - layers: 4
+          filters: 128
+          stride: 2
+        - layers: 6
+          filters: 256
+          stride: 2
+        - layers: 3
+          filters: 512
+          stride: 2
+      
+      global_pool: "avg"
+      dropout: 0.5
+      output_units: 10
+    
+    training:
+      optimizer:
+        name: "SGD"
+        lr: 0.1
+        momentum: 0.9
+        weight_decay: 1e-4
+      scheduler:
+        name: "MultiStepLR"
+        milestones: [60, 120, 160]
+        gamma: 0.1
+      loss: "CrossEntropyLoss"
+      batch_size: 32
+      epochs: 200
+
+# 集成学习模型
+ensemble:
+  
+  # 投票集成
+  voting_ensemble:
+    name: "Voting Ensemble"
+    type: "ensemble"
+    base_models:
+      - "svm"
+      - "random_forest"
+      - "xgboost"
+    voting: "soft"  # hard, soft
+    weights: null  # 等权重
+  
+  # 堆叠集成
+  stacking_ensemble:
+    name: "Stacking Ensemble"
+    type: "ensemble"
+    base_models:
+      - "svm"
+      - "random_forest"
+      - "xgboost"
+      - "hybrid_cnn"
+    meta_learner: "logistic_regression"
+    cv_folds: 5
+    use_features_in_secondary: false
+  
+  # 加权融合
+  weighted_ensemble:
+    name: "Weighted Ensemble"
+    type: "ensemble"
+    base_models:
+      - model: "hybrid_cnn"
+        weight: 0.4
+      - model: "vision_transformer"
+        weight: 0.3
+      - model: "xgboost"
+        weight: 0.2
+      - model: "random_forest"
+        weight: 0.1
+    weight_optimization: true
+
+# 模型选择和调优
+model_selection:
+  
+  # 超参数优化
+  hyperparameter_optimization:
+    method: "optuna"  # grid_search, random_search, optuna, hyperopt
+    n_trials: 100
+    timeout: 3600  # 秒
+    n_jobs: -1
+    
+    # Optuna特定配置
+    optuna:
+      sampler: "TPE"  # TPE, Random, CmaEs
+      pruner: "MedianPruner"  # MedianPruner, SuccessiveHalvingPruner
+      direction: "maximize"  # minimize, maximize
+  
+  # 交叉验证
+  cross_validation:
+    method: "stratified_kfold"  # kfold, stratified_kfold, group_kfold
+    n_splits: 5
+    shuffle: true
+    random_state: 42
+  
+  # 早停策略
+  early_stopping:
+    monitor: "val_accuracy"
+    patience: 15
+    min_delta: 0.001
+    mode: "max"  # min, max
+    restore_best_weights: true
+
+# 预训练模型
+pretrained:
+  
+  # 模型路径
+  model_zoo:
+    svm_wetland: "models/pretrained/svm_wetland_v1.pkl"
+    rf_wetland: "models/pretrained/rf_wetland_v1.pkl"
+    xgb_wetland: "models/pretrained/xgb_wetland_v1.pkl"
+    hybrid_cnn_wetland: "models/pretrained/hybrid_cnn_wetland_v1.pth"
+    vit_wetland: "models/pretrained/vit_wetland_v1.pth"
+  
+  # 微调配置
+  fine_tuning:
+    enabled: true
+    freeze_backbone: false
+    learning_rate_multiplier: 0.1
+    epochs: 50
+
+# 模型评估
+evaluation:
+  
+  # 评估指标
+  metrics:
+    - "accuracy"
+    - "precision"
+    - "recall"
+    - "f1_score"
+    - "kappa"
+    - "auc"
+    - "confusion_matrix"
+  
+  # 类别特定评估
+  per_class_metrics: true
+  
+  # 模型解释性
+  interpretability:
+    enabled: true
+    methods:
+      - "feature_importance"
+      - "shap"
+      - "lime"
+      - "grad_cam"  # 仅适用于深度学习模型
+  
+  # 不确定性评估
+  uncertainty:
+    enabled: true
+    methods:
+      - "monte_carlo_dropout"
+      - "deep_ensemble"
+      - "bayesian_neural_network"
+
+# 模型部署
+deployment:
+  
+  # 模型导出
+  export:
+    format: ["pickle", "onnx", "torchscript"]
+    optimize: true
+    quantization: false
+  
+  # 推理优化
+  inference:
+    batch_size: 1
+    num_threads: 4
+    device: "cpu"  # cpu, cuda
+    precision: "fp32"  # fp16, fp32
+  
+  # API配置
+  api:
+    framework: "fastapi"  # fastapi, flask
+    host: "0.0.0.0"
+    port: 8000
+    workers: 4
+
+# 实验管理
+experiment:
+  
+  # 实验跟踪
+  tracking:
+    enabled: true
+    backend: "mlflow"  # mlflow, wandb, tensorboard
+    experiment_name: "wetland_classification"
+    
+  # 版本控制
+  versioning:
+    enabled: true
+    model_registry: true
+    automatic_versioning: true
+  
+  # 比较和分析
+  comparison:
+    metrics: ["accuracy", "f1_score", "kappa"]
+    statistical_tests: ["mcnemar", "paired_t_test"]
