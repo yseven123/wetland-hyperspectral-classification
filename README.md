@@ -2,7 +2,8 @@
 ## Wetland Hyperspectral Classification System
 基于深度学习与机器学习的高光谱遥感湿地生态系统精细化分类与景观格局分析系统
 
-![无标题](https://github.com/user-attachments/assets/59bf5efc-9f59-43aa-a486-4fad63e69c75)
+![FireShot Capture 006 - 湿地高光谱分类项目架构 - ](https://github.com/user-attachments/assets/4b674313-755b-4860-a594-6bc8ac99c266)
+
 
 ## 📋 项目概述
 
