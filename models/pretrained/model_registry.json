@@ -1,0 +1,327 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "last_updated": "2024-12-01",
+    "total_models": 15,
+    "repository": "wetland-hyperspectral-classification",
+    "base_url": "https://github.com/yourusername/wetland-hyperspectral-classification/releases/download"
+  },
+  "models": {
+    "svm_rbf_wetland_v1.0": {
+      "type": "traditional_ml",
+      "algorithm": "svm",
+      "kernel": "rbf",
+      "version": "1.0",
+      "file_path": "traditional_ml/svm/svm_rbf_wetland_v1.0.pkl",
+      "file_size": "15.2 MB",
+      "training_date": "2024-01-15",
+      "dataset": "wetland_hyperspectral_2024",
+      "performance": {
+        "overall_accuracy": 0.892,
+        "kappa": 0.856,
+        "training_time": "15min",
+        "inference_time": "2min",
+        "memory_usage": "512MB"
+      },
+      "input_shape": [null, 200],
+      "output_classes": 10,
+      "class_names": ["开放水面", "挺水植物", "浮叶植物", "沉水植物", "湿生草本", "有机质土壤", "矿物质土壤", "建筑物", "道路", "农田"],
+      "dependencies": ["scikit-learn>=1.0.0", "numpy>=1.20.0"],
+      "checksum": "md5:a1b2c3d4e5f67890abcdef1234567890",
+      "download_url": "https://github.com/yourusername/wetland-hyperspectral-classification/releases/download/v1.0/svm_rbf_wetland_v1.0.pkl",
+      "status": "stable"
+    },
+    "rf_wetland_v1.0": {
+      "type": "traditional_ml",
+      "algorithm": "random_forest",
+      "version": "1.0",
+      "file_path": "traditional_ml/random_forest/rf_wetland_v1.0.pkl",
+      "file_size": "8.7 MB",
+      "training_date": "2024-01-16",
+      "dataset": "wetland_hyperspectral_2024",
+      "performance": {
+        "overall_accuracy": 0.908,
+        "kappa": 0.879,
+        "training_time": "8min",
+        "inference_time": "1min",
+        "memory_usage": "256MB"
+      },
+      "input_shape": [null, 200],
+      "output_classes": 10,
+      "class_names": ["开放水面", "挺水植物", "浮叶植物", "沉水植物", "湿生草本", "有机质土壤", "矿物质土壤", "建筑物", "道路", "农田"],
+      "dependencies": ["scikit-learn>=1.0.0", "numpy>=1.20.0"],
+      "checksum": "md5:b2c3d4e5f6a78901bcdef1234567891",
+      "download_url": "https://github.com/yourusername/wetland-hyperspectral-classification/releases/download/v1.0/rf_wetland_v1.0.pkl",
+      "status": "stable"
+    },
+    "xgb_wetland_v1.0": {
+      "type": "traditional_ml",
+      "algorithm": "xgboost",
+      "version": "1.0",
+      "file_path": "traditional_ml/xgboost/xgb_wetland_v1.0.pkl",
+      "file_size": "12.3 MB",
+      "training_date": "2024-01-17",
+      "dataset": "wetland_hyperspectral_2024",
+      "performance": {
+        "overall_accuracy": 0.915,
+        "kappa": 0.889,
+        "training_time": "12min",
+        "inference_time": "1.5min",
+        "memory_usage": "384MB"
+      },
+      "input_shape": [null, 200],
+      "output_classes": 10,
+      "class_names": ["开放水面", "挺水植物", "浮叶植物", "沉水植物", "湿生草本", "有机质土壤", "矿物质土壤", "建筑物", "道路", "农田"],
+      "dependencies": ["xgboost>=1.5.0", "numpy>=1.20.0"],
+      "checksum": "md5:c3d4e5f6a7b89012cdef1234567892",
+      "download_url": "https://github.com/yourusername/wetland-hyperspectral-classification/releases/download/v1.0/xgb_wetland_v1.0.pkl",
+      "status": "stable"
+    },
+    "cnn_3d_wetland_v1.0": {
+      "type": "deep_learning",
+      "algorithm": "3d_cnn",
+      "version": "1.0",
+      "file_path": "deep_learning/cnn_3d/cnn_3d_wetland_v1.0.pth",
+      "file_size": "45.6 MB",
+      "training_date": "2024-01-20",
+      "dataset": "wetland_hyperspectral_2024",
+      "performance": {
+        "overall_accuracy": 0.934,
+        "kappa": 0.916,
+        "training_time": "45min",
+        "inference_time": "3min",
+        "memory_usage": "2GB"
+      },
+      "input_shape": [null, 200, 11, 11],
+      "output_classes": 10,
+      "class_names": ["开放水面", "挺水植物", "浮叶植物", "沉水植物", "湿生草本", "有机质土壤", "矿物质土壤", "建筑物", "道路", "农田"],
+      "dependencies": ["torch>=1.8.0", "torchvision>=0.9.0", "numpy>=1.20.0"],
+      "checksum": "md5:d4e5f6a7b8c90123def1234567893",
+      "download_url": "https://github.com/yourusername/wetland-hyperspectral-classification/releases/download/v1.0/cnn_3d_wetland_v1.0.pth",
+      "status": "stable",
+      "gpu_required": true,
+      "min_cuda_version": "10.2"
+    },
+    "hybrid_sn_wetland_v1.0": {
+      "type": "deep_learning",
+      "algorithm": "hybrid_sn",
+      "version": "1.0",
+      "file_path": "deep_learning/hybrid_sn/hybrid_sn_wetland_v1.0.pth",
+      "file_size": "38.9 MB",
+      "training_date": "2024-01-22",
+      "dataset": "wetland_hyperspectral_2024",
+      "performance": {
+        "overall_accuracy": 0.941,
+        "kappa": 0.925,
+        "training_time": "38min",
+        "inference_time": "2.5min",
+        "memory_usage": "1.5GB"
+      },
+      "input_shape": [null, 200, 11, 11],
+      "output_classes": 10,
+      "class_names": ["开放水面", "挺水植物", "浮叶植物", "沉水植物", "湿生草本", "有机质土壤", "矿物质土壤", "建筑物", "道路", "农田"],
+      "dependencies": ["torch>=1.8.0", "torchvision>=0.9.0", "numpy>=1.20.0"],
+      "checksum": "md5:e5f6a7b8c9d01234ef1234567894",
+      "download_url": "https://github.com/yourusername/wetland-hyperspectral-classification/releases/download/v1.0/hybrid_sn_wetland_v1.0.pth",
+      "status": "stable",
+      "gpu_required": true,
+      "min_cuda_version": "10.2"
+    },
+    "vit_wetland_v1.0": {
+      "type": "deep_learning",
+      "algorithm": "vision_transformer",
+      "version": "1.0",
+      "file_path": "deep_learning/vision_transformer/vit_wetland_v1.0.pth",
+      "file_size": "89.2 MB",
+      "training_date": "2024-01-25",
+      "dataset": "wetland_hyperspectral_2024",
+      "performance": {
+        "overall_accuracy": 0.945,
+        "kappa": 0.931,
+        "training_time": "52min",
+        "inference_time": "4min",
+        "memory_usage": "3GB"
+      },
+      "input_shape": [null, 200, 13, 13],
+      "output_classes": 10,
+      "class_names": ["开放水面", "挺水植物", "浮叶植物", "沉水植物", "湿生草本", "有机质土壤", "矿物质土壤", "建筑物", "道路", "农田"],
+      "dependencies": ["torch>=1.8.0", "torchvision>=0.9.0", "numpy>=1.20.0", "timm>=0.6.0"],
+      "checksum": "md5:f6a7b8c9d0e12345f1234567895",
+      "download_url": "https://github.com/yourusername/wetland-hyperspectral-classification/releases/download/v1.0/vit_wetland_v1.0.pth",
+      "status": "stable",
+      "gpu_required": true,
+      "min_cuda_version": "11.0"
+    },
+    "resnet_wetland_v1.0": {
+      "type": "deep_learning",
+      "algorithm": "resnet",
+      "version": "1.0",
+      "file_path": "deep_learning/resnet/resnet_wetland_v1.0.pth",
+      "file_size": "67.4 MB",
+      "training_date": "2024-01-23",
+      "dataset": "wetland_hyperspectral_2024",
+      "performance": {
+        "overall_accuracy": 0.938,
+        "kappa": 0.920,
+        "training_time": "42min",
+        "inference_time": "2min",
+        "memory_usage": "1.8GB"
+      },
+      "input_shape": [null, 200, 11, 11],
+      "output_classes": 10,
+      "class_names": ["开放水面", "挺水植物", "浮叶植物", "沉水植物", "湿生草本", "有机质土壤", "矿物质土壤", "建筑物", "道路", "农田"],
+      "dependencies": ["torch>=1.8.0", "torchvision>=0.9.0", "numpy>=1.20.0"],
+      "checksum": "md5:a7b8c9d0e1f23456a1234567896",
+      "download_url": "https://github.com/yourusername/wetland-hyperspectral-classification/releases/download/v1.0/resnet_wetland_v1.0.pth",
+      "status": "stable",
+      "gpu_required": true,
+      "min_cuda_version": "10.2"
+    },
+    "voting_ensemble_v1.0": {
+      "type": "ensemble",
+      "algorithm": "voting_ensemble",
+      "version": "1.0",
+      "file_path": "ensemble/voting/voting_ensemble_v1.0.pkl",
+      "file_size": "156.8 MB",
+      "training_date": "2024-01-28",
+      "dataset": "wetland_hyperspectral_2024",
+      "performance": {
+        "overall_accuracy": 0.948,
+        "kappa": 0.935,
+        "training_time": "35min",
+        "inference_time": "7min",
+        "memory_usage": "1GB"
+      },
+      "input_shape": [null, 200],
+      "output_classes": 10,
+      "class_names": ["开放水面", "挺水植物", "浮叶植物", "沉水植物", "湿生草本", "有机质土壤", "矿物质土壤", "建筑物", "道路", "农田"],
+      "base_models": ["svm_rbf_wetland_v1.0", "rf_wetland_v1.0", "xgb_wetland_v1.0"],
+      "dependencies": ["scikit-learn>=1.0.0", "xgboost>=1.5.0", "numpy>=1.20.0"],
+      "checksum": "md5:b8c9d0e1f2a34567b1234567897",
+      "download_url": "https://github.com/yourusername/wetland-hyperspectral-classification/releases/download/v1.0/voting_ensemble_v1.0.pkl",
+      "status": "stable"
+    },
+    "stacking_ensemble_v1.0": {
+      "type": "ensemble",
+      "algorithm": "stacking_ensemble",
+      "version": "1.0",
+      "file_path": "ensemble/stacking/stacking_ensemble_v1.0.pkl",
+      "file_size": "278.3 MB",
+      "training_date": "2024-01-30",
+      "dataset": "wetland_hyperspectral_2024",
+      "performance": {
+        "overall_accuracy": 0.952,
+        "kappa": 0.940,
+        "training_time": "65min",
+        "inference_time": "10min",
+        "memory_usage": "2.5GB"
+      },
+      "input_shape": [null, 200],
+      "output_classes": 10,
+      "class_names": ["开放水面", "挺水植物", "浮叶植物", "沉水植物", "湿生草本", "有机质土壤", "矿物质土壤", "建筑物", "道路", "农田"],
+      "base_models": ["svm_rbf_wetland_v1.0", "rf_wetland_v1.0", "xgb_wetland_v1.0", "hybrid_sn_wetland_v1.0"],
+      "meta_learner": "neural_network",
+      "dependencies": ["scikit-learn>=1.0.0", "xgboost>=1.5.0", "torch>=1.8.0", "numpy>=1.20.0"],
+      "checksum": "md5:c9d0e1f2a3b45678c1234567898",
+      "download_url": "https://github.com/yourusername/wetland-hyperspectral-classification/releases/download/v1.0/stacking_ensemble_v1.0.pkl",
+      "status": "stable",
+      "gpu_required": false
+    },
+    "hybrid_sn_compressed_v1.0": {
+      "type": "compressed",
+      "algorithm": "hybrid_sn_quantized",
+      "version": "1.0",
+      "file_path": "compressed/quantized/hybrid_sn_compressed_v1.0.pth",
+      "file_size": "12.1 MB",
+      "training_date": "2024-02-01",
+      "dataset": "wetland_hyperspectral_2024",
+      "performance": {
+        "overall_accuracy": 0.937,
+        "kappa": 0.920,
+        "training_time": "38min",
+        "inference_time": "0.8min",
+        "memory_usage": "512MB"
+      },
+      "compression_ratio": "3.2x",
+      "accuracy_loss": "0.4%",
+      "speed_improvement": "3.1x",
+      "input_shape": [null, 200, 11, 11],
+      "output_classes": 10,
+      "class_names": ["开放水面", "挺水植物", "浮叶植物", "沉水植物", "湿生草本", "有机质土壤", "矿物质土壤", "建筑物", "道路", "农田"],
+      "dependencies": ["torch>=1.8.0", "torchvision>=0.9.0", "numpy>=1.20.0"],
+      "checksum": "md5:d0e1f2a3b4c56789d1234567899",
+      "download_url": "https://github.com/yourusername/wetland-hyperspectral-classification/releases/download/v1.0/hybrid_sn_compressed_v1.0.pth",
+      "status": "stable",
+      "gpu_required": false,
+      "mobile_friendly": true
+    }
+  },
+  "datasets": {
+    "wetland_hyperspectral_2024": {
+      "name": "湿地高光谱数据集2024",
+      "description": "包含10类湿地地物的高光谱遥感数据集",
+      "spatial_resolution": "1m",
+      "spectral_bands": 200,
+      "spectral_range": "400-2500nm",
+      "total_samples": 50000,
+      "training_samples": 35000,
+      "validation_samples": 7500,
+      "test_samples": 7500,
+      "collection_date": "2023-05-01 to 2023-10-31",
+      "sensor": "AVIRIS-NG",
+      "study_area": "长江中下游湿地"
+    }
+  },
+  "class_definitions": {
+    "开放水面": {
+      "id": 0,
+      "description": "无植被覆盖的开放水域",
+      "color": "#0000FF"
+    },
+    "挺水植物": {
+      "id": 1,
+      "description": "根系在水中，茎叶挺出水面的植物",
+      "color": "#00FF00"
+    },
+    "浮叶植物": {
+      "id": 2,
+      "description": "根系在水底，叶片漂浮在水面的植物",
+      "color": "#90EE90"
+    },
+    "沉水植物": {
+      "id": 3,
+      "description": "完全生长在水面以下的植物",
+      "color": "#006400"
+    },
+    "湿生草本": {
+      "id": 4,
+      "description": "生长在湿润土壤上的草本植物",
+      "color": "#ADFF2F"
+    },
+    "有机质土壤": {
+      "id": 5,
+      "description": "含有机质丰富的湿地土壤",
+      "color": "#8B4513"
+    },
+    "矿物质土壤": {
+      "id": 6,
+      "description": "以矿物质为主的湿地土壤",
+      "color": "#D2691E"
+    },
+    "建筑物": {
+      "id": 7,
+      "description": "人工建造的结构物",
+      "color": "#FF0000"
+    },
+    "道路": {
+      "id": 8,
+      "description": "铺装或未铺装的道路",
+      "color": "#808080"
+    },
+    "农田": {
+      "id": 9,
+      "description": "农业用地",
+      "color": "#FFD700"
+    }
+  }
+}
